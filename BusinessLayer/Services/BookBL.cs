@@ -24,7 +24,7 @@ namespace BusinessLayer.Services
             this.adminRepository = adminRepository;
         }
 
-        public BookResponse addBook(CreateBookModel createBookModel)
+        public BookResponse addBook(BookRequestModel createBookModel)
         {
             try
             {
@@ -50,7 +50,20 @@ namespace BusinessLayer.Services
             {
                 throw new Exception(exception.Message);
             }
+        }
 
+        public BookResponse UpdateBook(int Id, BookRequestModel updateBookModel)
+        {
+            try
+            {
+                // Call the AddBook Method of Books Repository Class
+                var response = this.adminRepository.UpdateBook(Id,updateBookModel);
+                return response;
+            }
+            catch (Exception exception)
+            {
+                throw new Exception(exception.Message);
+            }
         }
     }
 }

@@ -24,7 +24,7 @@ namespace BookStoreApp.Controllers
         [HttpPost]
         [AllowAnonymous]
         //[Authorize(Roles = "Admin")]
-        public IActionResult AddBook([FromForm] CreateBookModel createBookModel)
+        public IActionResult AddBook([FromForm] BookRequestModel createBookModel)
         {
             try
             {
@@ -65,7 +65,7 @@ namespace BookStoreApp.Controllers
         {
             try
             {
-                // Call the User GetAllBooks Method of User Admin classs
+                // Call the User GetAllBooks Method of BookBL classs
                 var response = this.bookBuiseness.GetAllBooks();
 
                 // check if Id is not equal to zero
@@ -79,6 +79,46 @@ namespace BookStoreApp.Controllers
                 {
                     bool status = false;
                     var message = "Failed to Read";
+                    return this.NotFound(new { status, message });
+                }
+            }
+            catch (Exception e)
+            {
+                return this.BadRequest(new { status = false, message = e.Message });
+            }
+        }
+
+        [HttpPut]
+        [Route("{Id}")]
+        [AllowAnonymous]
+        //[Authorize(Roles = "Admin")]
+        public IActionResult UpdateBook([FromRoute] int Id,[FromForm] BookRequestModel updateBookModel)
+        {
+            try
+            {
+                if (updateBookModel.BookName == null || updateBookModel.AuthorName == null || updateBookModel.Description == null || updateBookModel.Price == null)
+                {
+                    throw new BookStoreException(BookStoreException.ExceptionType.NULL_FIELD_EXCEPTION, "Null Variable Field");
+                }
+                else if (updateBookModel.BookName == "" || updateBookModel.AuthorName == "" || updateBookModel.Description == "" || updateBookModel.Price == "")
+                {
+                    throw new BookStoreException(BookStoreException.ExceptionType.EMPTY_FIELD_EXCEPTION, "Empty Variable Field");
+                }
+
+                // Call the User Add Book Method of BookBL classs
+                var response = this.bookBuiseness.UpdateBook(Id, updateBookModel);
+
+                // check if Id is not equal to zero
+                if (!response.BookId.Equals(0))
+                {
+                    bool status = true;
+                    var message = "Book Updated Successfully";
+                    return this.Ok(new { status, message, data = response });
+                }
+                else
+                {
+                    bool status = false;
+                    var message = "Failed to Update";
                     return this.NotFound(new { status, message });
                 }
             }

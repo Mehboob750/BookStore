@@ -10,6 +10,7 @@ using static System.Net.Mime.MediaTypeNames;
 using Microsoft.Extensions.Configuration;
 
 using CloudinaryDotNet.Actions;
+using System.Linq;
 
 namespace RepositoryLayer.Services
 {
@@ -24,7 +25,7 @@ namespace RepositoryLayer.Services
 
         BookModel bookModel = new BookModel();
 
-        //BookResponse bookResponse = new BookResponse();
+        BookResponse bookResponse = new BookResponse();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UserRL"/> class.
@@ -36,7 +37,7 @@ namespace RepositoryLayer.Services
             this.configuration = configuration;
         }
 
-        public BookResponse AddBook(CreateBookModel createBookModel)
+        public BookResponse AddBook(BookRequestModel createBookModel)
         {
             try
             {
@@ -92,6 +93,48 @@ namespace RepositoryLayer.Services
                     bookResponseList.Add(bookResponse);
                 }
                 return bookResponseList;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        public BookResponse UpdateBook(int Id, BookRequestModel updateBookModel)
+        {
+            try
+            {
+                var response = this.dbContext.Books.FirstOrDefault(value => ((value.BookId == Id)));
+
+                if (!response.Equals(null))
+                {
+                    Account account = new Account(
+                                     configuration["CloudinarySettings:CloudName"],
+                                     configuration["CloudinarySettings:ApiKey"],
+                                     configuration["CloudinarySettings:ApiSecret"]);
+                    var path = updateBookModel.Image.OpenReadStream();
+                    Cloudinary cloudinary = new Cloudinary(account);
+
+                    var uploadParams = new ImageUploadParams()
+                    {
+                        File = new FileDescription(updateBookModel.Image.FileName, path)
+                    };
+
+                    var uploadResult = cloudinary.Upload(uploadParams);
+                    response.BookName = updateBookModel.BookName;
+                    response.AuthorName = updateBookModel.AuthorName;
+                    response.Description = updateBookModel.Description;
+                    response.Price = updateBookModel.Price;
+                    response.Quantity = updateBookModel.Quantity;
+                    response.ModificationDate = DateTime.Now;
+                    response.Image = uploadResult.Url.ToString();
+                    response.IsDeleted = "No";
+                    this.dbContext.Books.Update(response);
+                    this.dbContext.SaveChanges();
+
+                    return Response(response);
+                }
+                return bookResponse;
             }
             catch (Exception e)
             {

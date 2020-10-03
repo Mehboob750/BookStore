@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace CommanLayer.RequestModel
 {
-    public class CreateBookModel
+    public class BookRequestModel
     {
         /// <summary>
         /// Gets or sets the BookName
