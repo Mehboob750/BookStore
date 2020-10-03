@@ -69,16 +69,19 @@ namespace RepositoryLayer.Services
                 var responseList = this.dbContext.Books;
                 foreach (var response in responseList)
                 {
-                    BookResponse bookResponse = new BookResponse();
-                    bookResponse.BookId = response.BookId;
-                    bookResponse.BookName = response.BookName;
-                    bookResponse.AuthorName = response.AuthorName;
-                    bookResponse.Description = response.Description;
-                    bookResponse.Price = response.Price;
-                    bookResponse.Quantity = response.Quantity;
-                    bookResponse.CreatedDate = response.CreatedDate;
-                    bookResponse.Image = response.Image;
-                    bookResponseList.Add(bookResponse);
+                    if (response.IsDeleted == "No")
+                    {
+                        BookResponse bookResponse = new BookResponse();
+                        bookResponse.BookId = response.BookId;
+                        bookResponse.BookName = response.BookName;
+                        bookResponse.AuthorName = response.AuthorName;
+                        bookResponse.Description = response.Description;
+                        bookResponse.Price = response.Price;
+                        bookResponse.Quantity = response.Quantity;
+                        bookResponse.CreatedDate = response.CreatedDate;
+                        bookResponse.Image = response.Image;
+                        bookResponseList.Add(bookResponse);
+                    }
                 }
                 return bookResponseList;
             }
@@ -92,7 +95,7 @@ namespace RepositoryLayer.Services
         {
             try
             {
-                var response = this.dbContext.Books.FirstOrDefault(value => ((value.BookId == Id)));
+                var response = this.dbContext.Books.FirstOrDefault(value => ((value.BookId == Id)) && ((value.IsDeleted == "No")));
 
                 if (response!=null)
                 {
@@ -122,7 +125,7 @@ namespace RepositoryLayer.Services
         {
             try
             {
-                var response = this.dbContext.Books.FirstOrDefault(value => ((value.BookId == Id)));
+                var response = this.dbContext.Books.FirstOrDefault(value => ((value.BookId == Id)) && ((value.IsDeleted == "No")));
 
                 if (response != null)
                 {
