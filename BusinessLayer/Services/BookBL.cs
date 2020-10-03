@@ -13,15 +13,15 @@ namespace BusinessLayer.Services
         /// <summary>
         /// Created the Reference of IUserRepository
         /// </summary>
-        private readonly IBookRL adminRepository;
+        private readonly IBookRL bookRepository;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BookBL"/> class.
         /// </summary>
         /// <param name="adminRepository">It contains the object IUserRepository</param>
-        public BookBL(IBookRL adminRepository)
+        public BookBL(IBookRL bookRepository)
         {
-            this.adminRepository = adminRepository;
+            this.bookRepository = bookRepository;
         }
 
         public BookResponse addBook(BookRequestModel createBookModel)
@@ -29,7 +29,7 @@ namespace BusinessLayer.Services
             try
             {
                 // Call the AddBook Method of Books Repository Class
-                var response = this.adminRepository.AddBook(createBookModel);
+                var response = this.bookRepository.AddBook(createBookModel);
                 return response;
             }
             catch (Exception exception)
@@ -43,7 +43,7 @@ namespace BusinessLayer.Services
             try
             {
                 // Call the GetAllBooks Method of Books Repository Class
-                var response = this.adminRepository.GetAllBooks();
+                var response = this.bookRepository.GetAllBooks();
                 return response;
             }
             catch (Exception exception)
@@ -57,7 +57,21 @@ namespace BusinessLayer.Services
             try
             {
                 // Call the AddBook Method of Books Repository Class
-                var response = this.adminRepository.UpdateBook(Id,updateBookModel);
+                var response = this.bookRepository.UpdateBook(Id,updateBookModel);
+                return response;
+            }
+            catch (Exception exception)
+            {
+                throw new Exception(exception.Message);
+            }
+        }
+
+        public BookResponse DeleteBook(int Id)
+        {
+            try
+            {
+                // Call the AddBook Method of Books Repository Class
+                var response = this.bookRepository.DeleteBook(Id);
                 return response;
             }
             catch (Exception exception)
