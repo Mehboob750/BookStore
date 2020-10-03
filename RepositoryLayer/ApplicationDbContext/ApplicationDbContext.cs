@@ -18,14 +18,19 @@ namespace RepositoryLayer
         }
 
         /// <summary>
-        /// Dbset for Quantity table
+        /// Dbset for UserDetails table
         /// </summary>
         public DbSet<UserModel> UserDetails { get; set; }
 
         /// <summary>
-        /// Dbset for Quantity Books
+        /// Dbset for Books table 
         /// </summary>
         public DbSet<BookModel> Books { get; set; }
+
+        /// <summary>
+        /// Dbset for Cart table
+        /// </summary>
+        public DbSet<CartModel> Cart { get; set; }
 
     }
 }

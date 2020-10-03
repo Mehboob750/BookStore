@@ -23,7 +23,7 @@ namespace BookStoreApp.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         public IActionResult AddBook([FromForm] BookRequestModel createBookModel)
         {
             try
@@ -61,6 +61,7 @@ namespace BookStoreApp.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public IActionResult GetAllBooks()
         {
             try
@@ -91,7 +92,7 @@ namespace BookStoreApp.Controllers
         [HttpPut]
         [Route("{Id}")]
         [AllowAnonymous]
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         public IActionResult UpdateBook([FromRoute] int Id,[FromForm] BookRequestModel updateBookModel)
         {
             try
@@ -131,7 +132,7 @@ namespace BookStoreApp.Controllers
         [HttpDelete]
         [Route("{Id}")]
         [AllowAnonymous]
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         public IActionResult DeleteBook([FromRoute] int Id)
         {
             try
@@ -161,6 +162,7 @@ namespace BookStoreApp.Controllers
 
         [HttpGet]
         [Route("{Id}")]
+        [Authorize(Roles = "Admin")]
         public IActionResult SearchBook(int Id)
         {
             try
