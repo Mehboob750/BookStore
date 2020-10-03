@@ -19,7 +19,7 @@ namespace RepositoryLayer.Services
 
         UserModel userModel = new UserModel();
         UserResponseModel userResponse = new UserResponseModel();
-
+        LoginResponseModel loginResponse = new LoginResponseModel();
         /// <summary>
         /// Initializes a new instance of the <see cref="UserRL"/> class.
         /// </summary>
@@ -73,7 +73,7 @@ namespace RepositoryLayer.Services
             }
         }
 
-        public UserResponseModel UserLogin(LoginModel loginModel)
+        public LoginResponseModel UserLogin(LoginModel loginModel)
         {
             try
             {
@@ -85,9 +85,17 @@ namespace RepositoryLayer.Services
                 var response = this.dbContext.UserDetails.FirstOrDefault(value => ((value.EmailId == loginModel.EmailId))&& ((value.Password == password)));            
                 if (response != null)
                 {
-                    return userResponse;
+                    loginResponse.Id = userModel.Id;
+                    loginResponse.FirstName = userModel.FirstName;
+                    loginResponse.LastName = userModel.LastName;
+                    loginResponse.Gender = userModel.Gender;
+                    loginResponse.EmailId = userModel.EmailId;
+                    loginResponse.PhoneNumber = userModel.PhoneNumber;
+                    loginResponse.Role = userModel.Role;
+                    loginResponse.RegistrationDate = userModel.RegistrationDate;
+                    return loginResponse;
                 }
-                return Response(userModel);
+                return loginResponse;
             }
             catch (Exception exception)
             {
@@ -98,7 +106,7 @@ namespace RepositoryLayer.Services
 
         public UserResponseModel Response(UserModel userModel)
         {
-           // UserResponseModel userResponse = new UserResponseModel();
+            UserResponseModel userResponse = new UserResponseModel();
             userResponse.Id = userModel.Id;
             userResponse.FirstName = userModel.FirstName;
             userResponse.LastName = userModel.LastName;

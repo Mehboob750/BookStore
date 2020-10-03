@@ -11,6 +11,6 @@ namespace BusinessLayer.Interface
     {
         UserResponseModel UserRegistration(RegisterationModel registerationModel);
 
-        UserResponseModel UserLogin(LoginModel loginModel);
+        LoginResponseModel UserLogin(LoginModel loginModel);
     }
 }

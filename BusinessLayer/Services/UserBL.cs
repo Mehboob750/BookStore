@@ -45,7 +45,7 @@ namespace BusinessLayer.Services
 
         }
 
-        public UserResponseModel UserLogin(LoginModel loginModel)
+        public LoginResponseModel UserLogin(LoginModel loginModel)
         {
             try
             {
