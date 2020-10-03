@@ -23,7 +23,7 @@ namespace BookStoreApp.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles ="Admin")]
         public IActionResult AddBook([FromForm] BookRequestModel createBookModel)
         {
             try

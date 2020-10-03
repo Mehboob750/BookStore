@@ -49,8 +49,8 @@ namespace RepositoryLayer.Services
                 bookModel.Quantity = createBookModel.Quantity;
                 bookModel.CreatedDate = DateTime.Now;
                 bookModel.Image = image;
-                this.dbContext.Books.Add(bookModel);
                 bookModel.IsDeleted = "No";
+                this.dbContext.Books.Add(bookModel);
                 this.dbContext.SaveChanges();
                
                 return Response(bookModel);

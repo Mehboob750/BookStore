@@ -77,11 +77,17 @@ namespace BookStoreApplication
             // Add application service for User Repository Layer
             services.AddTransient<IUserRL, UserRL>();
 
-            // Add application service for Admin Business Layer
+            // Add application service for Book Business Layer
             services.AddTransient<IBookBL, BookBL>();
 
-            // Add application service for Admin Repository Layer
+            // Add application service for Book Repository Layer
             services.AddTransient<IBookRL, BookRL>();
+
+            // Add application service for Cart Business Layer
+            services.AddTransient<ICartBL, CartBL>();
+
+            // Add application service for Cart Repository Layer
+            services.AddTransient<ICartRL, CartRL>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddSwaggerGen(c =>
