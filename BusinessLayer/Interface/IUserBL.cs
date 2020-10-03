@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Text;
 using CommanLayer.Model;
 using CommanLayer.RequestModel;
+using CommanLayer.ResponseModel;
 
 namespace BusinessLayer.Interface
 {
     public interface IUserBL
     {
-        UserModel UserRegistration(RegisterationModel registerationModel);
-        
-        UserModel UserLogin(LoginModel loginModel);
+        UserResponseModel UserRegistration(RegisterationModel registerationModel);
+
+        UserResponseModel UserLogin(LoginModel loginModel);
     }
 }

@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Text;
 using CommanLayer.Model;
 using CommanLayer.RequestModel;
+using CommanLayer.ResponseModel;
 
 namespace RepositoryLayer.Interface
 {
     public interface IUserRL
     {
-        UserModel UserRegistration(RegisterationModel registerationModel);
+        UserResponseModel UserRegistration(RegisterationModel registerationModel);
 
-        UserModel UserLogin(LoginModel loginModel);
+        UserResponseModel UserLogin(LoginModel loginModel);
     }
 }

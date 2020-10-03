@@ -5,6 +5,7 @@ using System.Text;
 using CommanLayer.Model;
 using CommanLayer.PasswordEncrypt;
 using CommanLayer.RequestModel;
+using CommanLayer.ResponseModel;
 using RepositoryLayer.Interface;
 
 namespace RepositoryLayer.Services
@@ -15,6 +16,9 @@ namespace RepositoryLayer.Services
         /// Created the Reference of ApplicationdbContext
         /// </summary>
         private ApplicationDbContext dbContext;
+
+        UserModel userModel = new UserModel();
+        UserResponseModel userResponse = new UserResponseModel();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UserRL"/> class.
@@ -35,11 +39,12 @@ namespace RepositoryLayer.Services
         /// </summary>
         /// <param name="quantity">It contains the Object of Quantity Model</param>
         /// <returns>It returns Added Record</returns>
-        public UserModel UserRegistration(RegisterationModel registerationModel)
+        public UserResponseModel UserRegistration(RegisterationModel registerationModel)
         {
             try
             {
-                UserModel userModel = new UserModel();
+               // UserModel userModel = new UserModel();
+                //UserResponseModel userResponse = new UserResponseModel();
                 // this varibale stores the Encrypted password
                 string password = this.encryptDecrypt.EncodePasswordToBase64(registerationModel.Password);
                 var result = this.dbContext.UserDetails.FirstOrDefault(value => ((value.FirstName == registerationModel.FirstName)) && ((value.LastName == registerationModel.LastName)) && ((value.EmailId == registerationModel.EmailId)));
@@ -58,10 +63,9 @@ namespace RepositoryLayer.Services
                 }
                 else
                 {
-                    return userModel;
+                    return userResponse;
                 }
-
-                return userModel;
+                return Response(userModel);
             }
             catch (Exception e)
             {
@@ -69,26 +73,41 @@ namespace RepositoryLayer.Services
             }
         }
 
-        public UserModel UserLogin(LoginModel loginModel)
+        public UserResponseModel UserLogin(LoginModel loginModel)
         {
             try
             {
-                UserModel userModel = new UserModel();
-               // return this.dbContext.Quantities.Find(id);
+               // UserModel userModel = new UserModel();
+                //UserResponseModel userResponse = new UserResponseModel();
+                // return this.dbContext.Quantities.Find(id);
                 string password = this.encryptDecrypt.EncodePasswordToBase64(loginModel.Password);
                 // Call the User Register Method of User Repository Class
                 var response = this.dbContext.UserDetails.FirstOrDefault(value => ((value.EmailId == loginModel.EmailId))&& ((value.Password == password)));            
                 if (response != null)
                 {
-                    return response;
+                    return userResponse;
                 }
-                return userModel;
+                return Response(userModel);
             }
             catch (Exception exception)
             {
                 throw new Exception(exception.Message);
             }
 
+        }
+
+        public UserResponseModel Response(UserModel userModel)
+        {
+           // UserResponseModel userResponse = new UserResponseModel();
+            userResponse.Id = userModel.Id;
+            userResponse.FirstName = userModel.FirstName;
+            userResponse.LastName = userModel.LastName;
+            userResponse.Gender = userModel.Gender;
+            userResponse.EmailId = userModel.EmailId;
+            userResponse.PhoneNumber = userModel.PhoneNumber;
+            userResponse.Role = userModel.Role;
+            userResponse.RegistrationDate = userModel.RegistrationDate;
+            return userResponse;
         }
     }
 }

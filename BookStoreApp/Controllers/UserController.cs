@@ -97,7 +97,7 @@ namespace BookStoreApplication.Controllers
                 var response = this.userBuiseness.UserLogin(loginModel);
 
                 // check if Id is not equal to zero
-                if (!response.EmailId.Equals(null))
+                if (!response.Id.Equals(0))
                 {
                     bool status = true;
                     var message = "Login Successfully";

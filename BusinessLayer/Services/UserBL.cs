@@ -4,6 +4,7 @@ using System.Text;
 using BusinessLayer.Interface;
 using CommanLayer.Model;
 using CommanLayer.RequestModel;
+using CommanLayer.ResponseModel;
 using RepositoryLayer.Interface;
 
 namespace BusinessLayer.Services
@@ -29,7 +30,7 @@ namespace BusinessLayer.Services
         /// </summary>
         /// <param name="registrationModel">It contains the Object of Registration Request Model</param>
         /// <returns>If User Registered Successfully it returns User response Model</returns>
-        public UserModel UserRegistration(RegisterationModel registerationModel)
+        public UserResponseModel UserRegistration(RegisterationModel registerationModel)
         {
             try
             {
@@ -44,7 +45,7 @@ namespace BusinessLayer.Services
 
         }
 
-        public UserModel UserLogin(LoginModel loginModel)
+        public UserResponseModel UserLogin(LoginModel loginModel)
         {
             try
             {
