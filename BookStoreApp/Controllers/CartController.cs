@@ -21,8 +21,8 @@ namespace BookStoreApp.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        [Authorize(Roles = "User")]
-        public IActionResult AddBook(int BookId)
+        //[Authorize(Roles = "User")]
+        public IActionResult AddToCart(int BookId)
         {
             try
             {
@@ -42,6 +42,36 @@ namespace BookStoreApp.Controllers
                 {
                     bool status = false;
                     var message = "Failed To Add Cart";
+                    return this.BadRequest(new { status, message });
+                }
+            }
+            catch (Exception e)
+            {
+                return this.BadRequest(new { status = false, message = e.Message });
+            }
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        //[Authorize(Roles = "User")]
+        public IActionResult GetAllCartValues()
+        {
+            try
+            {
+                // Call the AddToCart Method of Cart class
+                var response = this.cartBuiseness.GetAllCartValues();
+
+                // check if Id is not equal to zero
+                if (!response.Equals(null))
+                {
+                    bool status = true;
+                    var message = "Cart Data Read Successfully";
+                    return this.Ok(new { status, message, data = response });
+                }
+                else
+                {
+                    bool status = false;
+                    var message = "Failed To Read Cart Details";
                     return this.BadRequest(new { status, message });
                 }
             }

@@ -55,6 +55,30 @@ namespace RepositoryLayer.Services
             }
         }
 
+        public List<CartResponseModel> GetAllCartValues()
+        {
+            try
+            {
+                List<CartResponseModel> cartResponseList = new List<CartResponseModel>();
+                var cartResponse = this.dbContext.Cart;
+                foreach (var response in cartResponse)
+                {
+                    if (response.IsDeleted == "No")
+                    {
+                        CartResponseModel cart = new CartResponseModel();
+                        cart = Response(response);
+                        cartResponseList.Add(cart);
+                    }
+                }
+                return cartResponseList;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+
         public CartResponseModel Response(CartModel cartModel)
         {
             cartResponse.CartId = cartModel.CartId;

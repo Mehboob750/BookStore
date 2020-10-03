@@ -36,5 +36,18 @@ namespace BusinessLayer.Services
                 throw new Exception(exception.Message);
             }
         }
+
+        public List<CartResponseModel> GetAllCartValues()
+        {
+            try
+            {
+                var response = this.cartRepository.GetAllCartValues();
+                return response;
+            }
+            catch (Exception exception)
+            {
+                throw new Exception(exception.Message);
+            }
+        }
     }
 }

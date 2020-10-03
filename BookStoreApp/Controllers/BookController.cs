@@ -69,7 +69,7 @@ namespace BookStoreApp.Controllers
                 // Call the User GetAllBooks Method of BookBL classs
                 var response = this.bookBuiseness.GetAllBooks();
 
-                // check if Id is not equal to zero
+                // check if response is not equal to null
                 if (!response.Equals(null))
                 {
                     bool status = true;

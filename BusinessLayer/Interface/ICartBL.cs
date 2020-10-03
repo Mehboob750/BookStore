@@ -8,5 +8,7 @@ namespace BusinessLayer.Interface
     public interface ICartBL
     {
         CartResponseModel AddToCart(int claimId, int BookId);
+
+        List<CartResponseModel> GetAllCartValues();
     }
 }
