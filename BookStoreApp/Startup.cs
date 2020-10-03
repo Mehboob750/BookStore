@@ -8,14 +8,18 @@
 
 namespace BookStoreApplication
 {
+    using System.Collections.Generic;
+    using System.Text;
     using BusinessLayer.Interface;
     using BusinessLayer.Services;
+    using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.IdentityModel.Tokens;
     using RepositoryLayer;
     using RepositoryLayer.Interface;
     using RepositoryLayer.Services;
@@ -46,6 +50,25 @@ namespace BookStoreApplication
         /// <param name="services">It contains the services</param>
         public void ConfigureServices(IServiceCollection services)
         {
+            var key = Encoding.UTF8.GetBytes(this.Configuration["Jwt:Key"]);
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(x =>
+            {
+                x.RequireHttpsMetadata = false;
+                x.SaveToken = false;
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                };
+            });
+
             services.AddDbContextPool<ApplicationDbContext>(opts => opts.UseSqlServer(this.Configuration["ConnectionStrings:BookStore"]));
 
             // Add application service for User Business Layer
@@ -53,11 +76,28 @@ namespace BookStoreApplication
 
             // Add application service for User Repository Layer
             services.AddTransient<IUserRL, UserRL>();
+
+            // Add application service for Admin Business Layer
+            services.AddTransient<IAdminBL, AdminBL>();
+
+            // Add application service for Admin Repository Layer
+            services.AddTransient<IAdminRL, AdminRL>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "Book Store API", Description = "Swagger Book Store API" });
+                c.AddSecurityDefinition("Bearer", new ApiKeyScheme
+                {
+                    Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+                    Name = "Authorization",
+                    In = "header",
+                    Type = "apiKey"
+                });
+                c.AddSecurityRequirement(
+                    new Dictionary<string, IEnumerable<string>>
+                    { { "Bearer",new string[]{ } }
+                    });
             });
         }
 
@@ -78,6 +118,7 @@ namespace BookStoreApplication
             }
 
             app.UseHttpsRedirection();
+            app.UseAuthentication();
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

@@ -1,14 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 using BusinessLayer.Interface;
 using CommanLayer.Exception;
 using CommanLayer.Model;
 using CommanLayer.RequestModel;
+using CommanLayer.ResponseModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 
 namespace BookStoreApplication.Controllers
 {
@@ -17,15 +23,18 @@ namespace BookStoreApplication.Controllers
     public class UserController : ControllerBase
     {
 
+        IConfiguration configuration;
+
         private IUserBL userBuiseness;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UserController"/> class.
         /// </summary>
         /// <param name="userBusiness">It is an object of IUser Business</param>
-        public UserController(IUserBL userBuiseness)
+        public UserController(IUserBL userBuiseness, IConfiguration configuration)
         {
             this.userBuiseness = userBuiseness;
+            this.configuration = configuration;
         }
 
         /// <summary>
@@ -99,6 +108,8 @@ namespace BookStoreApplication.Controllers
                 // check if Id is not equal to zero
                 if (!response.Id.Equals(0))
                 {
+                    string token = this.CreateToken(response);
+                    response.Token = token;
                     bool status = true;
                     var message = "Login Successfully";
                     return this.Ok(new { status, message, data = response });
@@ -113,6 +124,29 @@ namespace BookStoreApplication.Controllers
             catch (Exception e)
             {
                 return this.BadRequest(new { status = false, message = e.Message });
+            }
+        }
+
+        private string CreateToken(LoginResponseModel userLoginModel)
+        {
+            try
+            {
+                var symmetricSecuritykey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]));
+                var signingCreds = new SigningCredentials(symmetricSecuritykey, SecurityAlgorithms.HmacSha256);
+
+                var claims = new List<Claim>();
+                claims.Add(new Claim(ClaimTypes.Role, userLoginModel.Role.ToString()));
+                claims.Add(new Claim("Id", userLoginModel.Id.ToString()));
+                claims.Add(new Claim("EmailId", userLoginModel.EmailId.ToString()));
+                var token = new JwtSecurityToken(
+                    claims: claims,
+                    expires: DateTime.Now.AddHours(1),
+                    signingCredentials: signingCreds);
+                return new JwtSecurityTokenHandler().WriteToken(token);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
             }
         }
     }
