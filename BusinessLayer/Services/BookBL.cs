@@ -79,5 +79,19 @@ namespace BusinessLayer.Services
                 throw new Exception(exception.Message);
             }
         }
+
+        public BookResponse SearchBook(int Id)
+        {
+            try
+            {
+                // Call the GetAllBooks Method of Books Repository Class
+                var response = this.bookRepository.SearchBook(Id);
+                return response;
+            }
+            catch (Exception exception)
+            {
+                throw new Exception(exception.Message);
+            }
+        }
     }
 }

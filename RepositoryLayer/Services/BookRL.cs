@@ -142,6 +142,24 @@ namespace RepositoryLayer.Services
             }
         }
 
+        public BookResponse SearchBook(int Id)
+        {
+            try
+            {
+                var responseList = this.dbContext.Books;
+                var response = this.dbContext.Books.FirstOrDefault(value => ((value.BookId == Id)) && ((value.IsDeleted == "No")));
+                if (response != null )
+                {
+                    return Response(response);
+                }
+                return bookResponse;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
         public BookResponse Response(BookModel bookModel)
         {
             BookResponse bookResponse = new BookResponse();

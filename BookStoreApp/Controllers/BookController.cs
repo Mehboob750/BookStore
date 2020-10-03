@@ -158,5 +158,34 @@ namespace BookStoreApp.Controllers
                 return this.BadRequest(new { status = false, message = e.Message });
             }
         }
+
+        [HttpGet]
+        [Route("{Id}")]
+        public IActionResult SearchBook(int Id)
+        {
+            try
+            {
+                // Call the User GetAllBooks Method of BookBL classs
+                var response = this.bookBuiseness.SearchBook(Id);
+
+                // check if Id is not equal to zero
+                if (!response.BookId.Equals(0))
+                {
+                    bool status = true;
+                    var message = "Book Read Successfully";
+                    return this.Ok(new { status, message, data = response });
+                }
+                else
+                {
+                    bool status = false;
+                    var message = "Book Not Found";
+                    return this.NotFound(new { status, message });
+                }
+            }
+            catch (Exception e)
+            {
+                return this.BadRequest(new { status = false, message = e.Message });
+            }
+        }
     }
 }

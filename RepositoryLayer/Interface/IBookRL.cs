@@ -15,5 +15,7 @@ namespace RepositoryLayer.Interface
         BookResponse UpdateBook(int Id, BookRequestModel updateBookModel);
 
         BookResponse DeleteBook(int Id);
+
+        BookResponse SearchBook(int Id);
     }
 }
