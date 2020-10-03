@@ -41,29 +41,17 @@ namespace RepositoryLayer.Services
         {
             try
             {
-                Account account = new Account(
-                                 configuration["CloudinarySettings:CloudName"],
-                                 configuration["CloudinarySettings:ApiKey"],
-                                 configuration["CloudinarySettings:ApiSecret"]);
-                var path = createBookModel.Image.OpenReadStream();
-                Cloudinary cloudinary = new Cloudinary(account);
-
-                var uploadParams = new ImageUploadParams()
-                {
-                    File = new FileDescription(createBookModel.Image.FileName, path)
-                };
-
-                var uploadResult = cloudinary.Upload(uploadParams);
-                    bookModel.BookName = createBookModel.BookName;
-                    bookModel.AuthorName = createBookModel.AuthorName;
-                    bookModel.Description = createBookModel.Description;
-                    bookModel.Price = createBookModel.Price;
-                    bookModel.Quantity = createBookModel.Quantity;
-                    bookModel.CreatedDate = DateTime.Now;
-                    bookModel.Image = uploadResult.Url.ToString();
-                    this.dbContext.Books.Add(bookModel);
-                    bookModel.IsDeleted = "No";
-                    this.dbContext.SaveChanges();
+                string image = AddImage(createBookModel);
+                bookModel.BookName = createBookModel.BookName;
+                bookModel.AuthorName = createBookModel.AuthorName;
+                bookModel.Description = createBookModel.Description;
+                bookModel.Price = createBookModel.Price;
+                bookModel.Quantity = createBookModel.Quantity;
+                bookModel.CreatedDate = DateTime.Now;
+                bookModel.Image = image;
+                this.dbContext.Books.Add(bookModel);
+                bookModel.IsDeleted = "No";
+                this.dbContext.SaveChanges();
                
                 return Response(bookModel);
             }
@@ -106,28 +94,16 @@ namespace RepositoryLayer.Services
             {
                 var response = this.dbContext.Books.FirstOrDefault(value => ((value.BookId == Id)));
 
-                if (!response.Equals(null))
+                if (response!=null)
                 {
-                    Account account = new Account(
-                                     configuration["CloudinarySettings:CloudName"],
-                                     configuration["CloudinarySettings:ApiKey"],
-                                     configuration["CloudinarySettings:ApiSecret"]);
-                    var path = updateBookModel.Image.OpenReadStream();
-                    Cloudinary cloudinary = new Cloudinary(account);
-
-                    var uploadParams = new ImageUploadParams()
-                    {
-                        File = new FileDescription(updateBookModel.Image.FileName, path)
-                    };
-
-                    var uploadResult = cloudinary.Upload(uploadParams);
+                    string image = AddImage(updateBookModel);
                     response.BookName = updateBookModel.BookName;
                     response.AuthorName = updateBookModel.AuthorName;
                     response.Description = updateBookModel.Description;
                     response.Price = updateBookModel.Price;
                     response.Quantity = updateBookModel.Quantity;
                     response.ModificationDate = DateTime.Now;
-                    response.Image = uploadResult.Url.ToString();
+                    response.Image = image;
                     response.IsDeleted = "No";
                     this.dbContext.Books.Update(response);
                     this.dbContext.SaveChanges();
@@ -155,6 +131,24 @@ namespace RepositoryLayer.Services
             bookResponse.ModificationDate = bookModel.ModificationDate;
             bookResponse.Image = bookModel.Image;
             return bookResponse;
+        }
+
+        public string AddImage(BookRequestModel requestModel)
+        {
+            Account account = new Account(
+                                     configuration["CloudinarySettings:CloudName"],
+                                     configuration["CloudinarySettings:ApiKey"],
+                                     configuration["CloudinarySettings:ApiSecret"]);
+            var path = requestModel.Image.OpenReadStream();
+            Cloudinary cloudinary = new Cloudinary(account);
+
+            var uploadParams = new ImageUploadParams()
+            {
+                File = new FileDescription(requestModel.Image.FileName, path)
+            };
+
+            var uploadResult = cloudinary.Upload(uploadParams);
+           return uploadResult.Url.ToString();
         }
     }
 }
