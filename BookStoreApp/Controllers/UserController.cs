@@ -71,5 +71,49 @@ namespace BookStoreApplication.Controllers
                 return this.BadRequest(new { status = false, message = e.Message });
             }
         }
+
+        /// <summary>
+        /// This Method is used for User Registration
+        /// </summary>
+        /// <param name="loginModel">It is an object of Login Model</param>
+        /// <returns>Returns the result in SMD format</returns>
+        [HttpPost]
+        [Route("Login")]
+        [AllowAnonymous]
+        public IActionResult UserLogin(LoginModel loginModel)
+        {
+            try
+            {
+                if (loginModel.Role == null || loginModel.EmailId == null || loginModel.Password == null)
+                {
+                    throw new BookStoreException(BookStoreException.ExceptionType.NULL_FIELD_EXCEPTION, "Null Variable Field");
+                }
+                else if (loginModel.Role == "" || loginModel.EmailId == "" || loginModel.Password == "")
+                {
+                    throw new BookStoreException(BookStoreException.ExceptionType.EMPTY_FIELD_EXCEPTION, "Empty Variable Field");
+                }
+
+                // Call the User Registration Method of User Business classs
+                var response = this.userBuiseness.UserLogin(loginModel);
+
+                // check if Id is not equal to zero
+                if (!response.EmailId.Equals(null))
+                {
+                    bool status = true;
+                    var message = "Login Successfully";
+                    return this.Ok(new { status, message, data = response });
+                }
+                else
+                {
+                    bool status = false;
+                    var message = "Login Failed";
+                    return this.NotFound(new { status, message });
+                }
+            }
+            catch (Exception e)
+            {
+                return this.BadRequest(new { status = false, message = e.Message });
+            }
+        }
     }
 }

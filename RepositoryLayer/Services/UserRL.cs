@@ -40,10 +40,9 @@ namespace RepositoryLayer.Services
             try
             {
                 UserModel userModel = new UserModel();
-                
                 // this varibale stores the Encrypted password
                 string password = this.encryptDecrypt.EncodePasswordToBase64(registerationModel.Password);
-                var result = this.dbContext.UserDetails.FirstOrDefault(value => ((value.EmailId == userModel.EmailId)));
+                var result = this.dbContext.UserDetails.FirstOrDefault(value => ((value.FirstName == registerationModel.FirstName)) && ((value.LastName == registerationModel.LastName)) && ((value.EmailId == registerationModel.EmailId)));
                 if (result == null)
                 {
                     userModel.FirstName = registerationModel.FirstName;
@@ -53,6 +52,7 @@ namespace RepositoryLayer.Services
                     userModel.PhoneNumber = registerationModel.PhoneNumber;
                     userModel.Password = password;
                     userModel.Role = registerationModel.Role;
+                    userModel.RegistrationDate = DateTime.Now;
                     this.dbContext.UserDetails.Add(userModel);
                     this.dbContext.SaveChanges();
                 }
@@ -67,6 +67,28 @@ namespace RepositoryLayer.Services
             {
                 throw new Exception(e.Message);
             }
+        }
+
+        public UserModel UserLogin(LoginModel loginModel)
+        {
+            try
+            {
+                UserModel userModel = new UserModel();
+               // return this.dbContext.Quantities.Find(id);
+                string password = this.encryptDecrypt.EncodePasswordToBase64(loginModel.Password);
+                // Call the User Register Method of User Repository Class
+                var response = this.dbContext.UserDetails.FirstOrDefault(value => ((value.EmailId == loginModel.EmailId))&& ((value.Password == password)));            
+                if (response != null)
+                {
+                    return response;
+                }
+                return userModel;
+            }
+            catch (Exception exception)
+            {
+                throw new Exception(exception.Message);
+            }
+
         }
     }
 }

@@ -10,7 +10,6 @@ namespace BookStoreApplication
 {
     using BusinessLayer.Interface;
     using BusinessLayer.Services;
-    using CommanLayer;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc;
@@ -58,7 +57,7 @@ namespace BookStoreApplication
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new Info { Title = "Quantity Measurement API", Description = "Swagger Quantity Measurement API" });
+                c.SwaggerDoc("v1", new Info { Title = "Book Store API", Description = "Swagger Book Store API" });
             });
         }
 

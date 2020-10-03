@@ -41,6 +41,22 @@ namespace BusinessLayer.Services
             {
                 throw new Exception(exception.Message);
             }
+
+        }
+
+        public UserModel UserLogin(LoginModel loginModel)
+        {
+            try
+            {
+                // Call the User Register Method of User Repository Class
+                var response = this.userRepository.UserLogin(loginModel);
+                return response;
+            }
+            catch (Exception exception)
+            {
+                throw new Exception(exception.Message);
+            }
+            
         }
     }
 }
