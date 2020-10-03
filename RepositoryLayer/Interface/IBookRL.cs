@@ -6,8 +6,10 @@ using CommanLayer.ResponseModel;
 
 namespace RepositoryLayer.Interface
 {
-    public interface IAdminRL
+    public interface IBookRL
     {
         BookResponse AddBook(CreateBookModel createBookModel);
+
+        List<BookResponse> GetAllBooks();
     }
 }

@@ -78,10 +78,10 @@ namespace BookStoreApplication
             services.AddTransient<IUserRL, UserRL>();
 
             // Add application service for Admin Business Layer
-            services.AddTransient<IAdminBL, AdminBL>();
+            services.AddTransient<IBookBL, BookBL>();
 
             // Add application service for Admin Repository Layer
-            services.AddTransient<IAdminRL, AdminRL>();
+            services.AddTransient<IBookRL, BookRL>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddSwaggerGen(c =>

@@ -9,5 +9,7 @@ namespace BusinessLayer.Interface
     public interface IBookBL
     {
         BookResponse addBook(CreateBookModel createBookModel);
+
+        List<BookResponse> GetAllBooks();
     }
 }

@@ -14,16 +14,16 @@ namespace BookStoreApp.Controllers
     [ApiController]
     public class BookController : Controller
     {
-        private IAdminBL adminBuiseness;
+        private IBookBL bookBuiseness;
 
-        public BookController(IAdminBL adminBuiseness)
+        public BookController(IBookBL bookBuiseness)
         {
-            this.adminBuiseness = adminBuiseness;
+            this.bookBuiseness = bookBuiseness;
         }
 
         [HttpPost]
-        [Route("")]
         [AllowAnonymous]
+        //[Authorize(Roles = "Admin")]
         public IActionResult AddBook([FromForm] CreateBookModel createBookModel)
         {
             try
@@ -38,7 +38,7 @@ namespace BookStoreApp.Controllers
                 }
 
                 // Call the User Add Book Method of User Admin classs
-                var response = this.adminBuiseness.addBook(createBookModel);
+                var response = this.bookBuiseness.addBook(createBookModel);
 
                 // check if Id is not equal to zero
                 if (!response.BookId.Equals(0))
@@ -52,6 +52,34 @@ namespace BookStoreApp.Controllers
                     bool status = false;
                     var message = "Failed to add";
                     return this.BadRequest(new { status, message });
+                }
+            }
+            catch (Exception e)
+            {
+                return this.BadRequest(new { status = false, message = e.Message });
+            }
+        }
+
+        [HttpGet]
+        public IActionResult GetAllBooks()
+        {
+            try
+            {
+                // Call the User GetAllBooks Method of User Admin classs
+                var response = this.bookBuiseness.GetAllBooks();
+
+                // check if Id is not equal to zero
+                if (!response.Equals(null))
+                {
+                    bool status = true;
+                    var message = "Books Read Successfully";
+                    return this.Ok(new { status, message, data = response });
+                }
+                else
+                {
+                    bool status = false;
+                    var message = "Failed to Read";
+                    return this.NotFound(new { status, message });
                 }
             }
             catch (Exception e)

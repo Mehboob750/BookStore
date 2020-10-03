@@ -28,8 +28,22 @@ namespace BusinessLayer.Services
         {
             try
             {
-                // Call the User Register Method of User Repository Class
+                // Call the AddBook Method of Books Repository Class
                 var response = this.adminRepository.AddBook(createBookModel);
+                return response;
+            }
+            catch (Exception exception)
+            {
+                throw new Exception(exception.Message);
+            }
+        }
+
+        public List<BookResponse> GetAllBooks()
+        {
+            try
+            {
+                // Call the GetAllBooks Method of Books Repository Class
+                var response = this.adminRepository.GetAllBooks();
                 return response;
             }
             catch (Exception exception)

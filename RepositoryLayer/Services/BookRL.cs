@@ -13,7 +13,7 @@ using CloudinaryDotNet.Actions;
 
 namespace RepositoryLayer.Services
 {
-    public class AdminRL : IAdminRL
+    public class BookRL : IBookRL
     {
         /// <summary>
         /// Created the Reference of ApplicationdbContext
@@ -24,13 +24,13 @@ namespace RepositoryLayer.Services
 
         BookModel bookModel = new BookModel();
 
-        BookResponse response = new BookResponse();
+        //BookResponse bookResponse = new BookResponse();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UserRL"/> class.
         /// </summary>
         /// <param name="dbContext">It contains the object ApplicationDbContext</param>
-        public AdminRL(ApplicationDbContext dbContext, IConfiguration configuration)
+        public BookRL(ApplicationDbContext dbContext, IConfiguration configuration)
         {
             this.dbContext = dbContext;
             this.configuration = configuration;
@@ -72,19 +72,46 @@ namespace RepositoryLayer.Services
             }
         }
 
+        public List<BookResponse> GetAllBooks()
+        {
+            try
+            {
+                List<BookResponse> bookResponseList = new List<BookResponse>();
+                var responseList = this.dbContext.Books;
+                foreach (var response in responseList)
+                {
+                    BookResponse bookResponse = new BookResponse();
+                    bookResponse.BookId = response.BookId;
+                    bookResponse.BookName = response.BookName;
+                    bookResponse.AuthorName = response.AuthorName;
+                    bookResponse.Description = response.Description;
+                    bookResponse.Price = response.Price;
+                    bookResponse.Quantity = response.Quantity;
+                    bookResponse.CreatedDate = response.CreatedDate;
+                    bookResponse.Image = response.Image;
+                    bookResponseList.Add(bookResponse);
+                }
+                return bookResponseList;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
         public BookResponse Response(BookModel bookModel)
         {
-            // UserResponseModel userResponse = new UserResponseModel();
-            response.BookId = bookModel.BookId;
-            response.BookName = bookModel.BookName;
-            response.AuthorName = bookModel.AuthorName;
-            response.Description = bookModel.Description;
-            response.Price = bookModel.Price;
-            response.Quantity = bookModel.Quantity;
-            response.CreatedDate = bookModel.CreatedDate;
-            response.ModificationDate = bookModel.ModificationDate;
-            response.Image = bookModel.Image;
-            return response;
+            BookResponse bookResponse = new BookResponse();
+            bookResponse.BookId = bookModel.BookId;
+            bookResponse.BookName = bookModel.BookName;
+            bookResponse.AuthorName = bookModel.AuthorName;
+            bookResponse.Description = bookModel.Description;
+            bookResponse.Price = bookModel.Price;
+            bookResponse.Quantity = bookModel.Quantity;
+            bookResponse.CreatedDate = bookModel.CreatedDate;
+            bookResponse.ModificationDate = bookModel.ModificationDate;
+            bookResponse.Image = bookModel.Image;
+            return bookResponse;
         }
     }
 }

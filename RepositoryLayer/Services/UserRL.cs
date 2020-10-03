@@ -43,7 +43,6 @@ namespace RepositoryLayer.Services
         {
             try
             {
-               // UserModel userModel = new UserModel();
                 //UserResponseModel userResponse = new UserResponseModel();
                 // this varibale stores the Encrypted password
                 string password = this.encryptDecrypt.EncodePasswordToBase64(registerationModel.Password);
@@ -77,7 +76,6 @@ namespace RepositoryLayer.Services
         {
             try
             {
-               // UserModel userModel = new UserModel();
                 //UserResponseModel userResponse = new UserResponseModel();
                 // return this.dbContext.Quantities.Find(id);
                 string password = this.encryptDecrypt.EncodePasswordToBase64(loginModel.Password);
@@ -85,14 +83,14 @@ namespace RepositoryLayer.Services
                 var response = this.dbContext.UserDetails.FirstOrDefault(value => ((value.EmailId == loginModel.EmailId))&& ((value.Password == password)));            
                 if (response != null)
                 {
-                    loginResponse.Id = userModel.Id;
-                    loginResponse.FirstName = userModel.FirstName;
-                    loginResponse.LastName = userModel.LastName;
-                    loginResponse.Gender = userModel.Gender;
-                    loginResponse.EmailId = userModel.EmailId;
-                    loginResponse.PhoneNumber = userModel.PhoneNumber;
-                    loginResponse.Role = userModel.Role;
-                    loginResponse.RegistrationDate = userModel.RegistrationDate;
+                    loginResponse.Id = response.Id;
+                    loginResponse.FirstName = response.FirstName;
+                    loginResponse.LastName = response.LastName;
+                    loginResponse.Gender = response.Gender;
+                    loginResponse.EmailId = response.EmailId;
+                    loginResponse.PhoneNumber = response.PhoneNumber;
+                    loginResponse.Role = response.Role;
+                    loginResponse.RegistrationDate = response.RegistrationDate;
                     return loginResponse;
                 }
                 return loginResponse;
