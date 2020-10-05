@@ -55,5 +55,26 @@ namespace CommanLayer.RequestModel
         [RegularExpression("^.{8,30}$", ErrorMessage = "Password Length should be between 8 to 15")]
         [Required]
         public string Password { get; set; }
+
+        /// <summary>
+        /// Gets or sets the City
+        /// </summary>
+        [Required]
+        [RegularExpression("^[A-Z][a-zA-Z]*$", ErrorMessage = "City is not valid")]
+        public string City { get; set; }
+
+        /// <summary>
+        /// Gets or sets the State
+        /// </summary>
+        [Required]
+        [RegularExpression("^[A-Z][a-zA-Z]*$", ErrorMessage = "State is not valid")]
+        public string State { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Pincode
+        /// </summary>
+        [Required]
+        [RegularExpression("^.{6}$", ErrorMessage = "Pincode is not valid")]
+        public string Pincode { get; set; }
     }
 }

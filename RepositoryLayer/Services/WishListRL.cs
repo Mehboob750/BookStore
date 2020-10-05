@@ -65,7 +65,7 @@ namespace RepositoryLayer.Services
                 foreach (var response in wishListResponse)
                 {
                     WishListResponseModel wishList = new WishListResponseModel();
-                    if (response.IsDeleted == "No")
+                    if (response.IsDeleted == "No" && response.IsMoved == "No")
                     {
                         wishList = Response(response);
                         wishListResponseList.Add(wishList);

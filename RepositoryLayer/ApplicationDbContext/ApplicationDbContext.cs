@@ -8,6 +8,7 @@
 namespace RepositoryLayer
 {
     using CommanLayer.Model;
+    using CommanLayer.ResponseModel;
     using Microsoft.EntityFrameworkCore;
 
     public class ApplicationDbContext : DbContext
@@ -35,6 +36,8 @@ namespace RepositoryLayer
         public DbSet<WishListModel> WishList { get; set; }
 
         public DbSet<AddressModel> UserAddress { get; set; }
+
+        public DbSet<OrderModel> Order { get; set; }
 
     }
 }

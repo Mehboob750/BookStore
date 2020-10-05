@@ -70,7 +70,7 @@ namespace BookStoreApp.Controllers
                 var response = this.bookBuiseness.GetAllBooks();
 
                 // check if response is not equal to null
-                if (!response.Equals(null))
+                if (!response.Count.Equals(0))
                 {
                     bool status = true;
                     var message = "Books Read Successfully";

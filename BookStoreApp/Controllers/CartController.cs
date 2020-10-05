@@ -62,7 +62,7 @@ namespace BookStoreApp.Controllers
                 var response = this.cartBuiseness.GetAllCartValues();
 
                 // check if Id is not equal to zero
-                if (!response.Equals(null))
+                if (!response.Count.Equals(0))
                 {
                     bool status = true;
                     var message = "Cart Data Read Successfully";
@@ -71,8 +71,8 @@ namespace BookStoreApp.Controllers
                 else
                 {
                     bool status = false;
-                    var message = "Failed To Read Cart Details";
-                    return this.BadRequest(new { status, message });
+                    var message = "Cart is Empty";
+                    return this.NotFound(new { status, message });
                 }
             }
             catch (Exception e)

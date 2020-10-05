@@ -45,6 +45,7 @@ namespace RepositoryLayer.Services
             {
                 //UserResponseModel userResponse = new UserResponseModel();
                 // this varibale stores the Encrypted password
+             
                 string password = this.encryptDecrypt.EncodePasswordToBase64(registerationModel.Password);
                 var result = this.dbContext.UserDetails.FirstOrDefault(value => ((value.FirstName == registerationModel.FirstName)) && ((value.LastName == registerationModel.LastName)) && ((value.EmailId == registerationModel.EmailId)));
                 if (result == null)
@@ -59,12 +60,21 @@ namespace RepositoryLayer.Services
                     userModel.RegistrationDate = DateTime.Now;
                     this.dbContext.UserDetails.Add(userModel);
                     this.dbContext.SaveChanges();
+                    userResponse = Response(userModel);
+                    AddressModel addressModel = new AddressModel();
+                    addressModel.UserId = userResponse.Id;
+                    addressModel.City = registerationModel.City;
+                    addressModel.State = registerationModel.State;
+                    addressModel.Pincode = registerationModel.Pincode;
+                    addressModel.RegistrationDate = userModel.RegistrationDate;
+                    this.dbContext.UserAddress.Add(addressModel);
+                    this.dbContext.SaveChanges();
                 }
                 else
                 {
                     return userResponse;
                 }
-                return Response(userModel);
+                return userResponse;
             }
             catch (Exception e)
             {
