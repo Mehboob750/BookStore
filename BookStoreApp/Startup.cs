@@ -88,6 +88,12 @@ namespace BookStoreApplication
 
             // Add application service for Cart Repository Layer
             services.AddTransient<ICartRL, CartRL>();
+
+            // Add application service for WishList Business Layer
+            services.AddTransient<IWishListBL, WishListBL>();
+
+            // Add application service for WishList Repository Layer
+            services.AddTransient<IWishListRL, WishListRL>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddSwaggerGen(c =>

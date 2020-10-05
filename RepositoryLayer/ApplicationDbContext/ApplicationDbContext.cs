@@ -32,5 +32,8 @@ namespace RepositoryLayer
         /// </summary>
         public DbSet<CartModel> Cart { get; set; }
 
+        public DbSet<WishListModel> WishList { get; set; }
+        
+
     }
 }
