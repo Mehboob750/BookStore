@@ -50,5 +50,33 @@ namespace BusinessLayer.Services
                 throw new Exception(exception.Message);
             }
         }
+
+        public WishListResponseModel DeleteFromWishList(int WishListId)
+        {
+            try
+            {
+                // Call the DeleteFromWishList Method of Cart Repository Class
+                var response = this.wishListRepository.DeleteFromWishList(WishListId);
+                return response;
+            }
+            catch (Exception exception)
+            {
+                throw new Exception(exception.Message);
+            }
+        }
+
+        public WishListResponseModel MoveToCart(int claimId, int WishListId)
+        {
+            try
+            {
+                // Call the MoveToCart Method of Cart Repository Class
+                var response = this.wishListRepository.MoveToCart(claimId, WishListId);
+                return response;
+            }
+            catch (Exception exception)
+            {
+                throw new Exception(exception.Message);
+            }
+        }
     }
 }

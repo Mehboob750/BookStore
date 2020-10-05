@@ -10,5 +10,9 @@ namespace RepositoryLayer.Interface
         WishListResponseModel AddToWishList(int claimId, int BookId);
 
         List<WishListResponseModel> GetAllWishListValues();
+
+        WishListResponseModel DeleteFromWishList(int WishListId);
+
+        WishListResponseModel MoveToCart(int claimId, int WishListId);
     }
 }

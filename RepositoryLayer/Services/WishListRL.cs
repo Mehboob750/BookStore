@@ -80,6 +80,52 @@ namespace RepositoryLayer.Services
             }
         }
 
+        public WishListResponseModel DeleteFromWishList(int WishListId)
+        {
+            try
+            {
+                var response = this.dbContext.WishList.FirstOrDefault(value => ((value.WishListID == WishListId)) && ((value.IsDeleted == "No")));
+                if (response != null)
+                {
+                    response.IsDeleted = "Yes";
+                    this.dbContext.WishList.Update(response);
+                    this.dbContext.SaveChanges();
+                    return Response(response);
+                }
+                return wishListResponse;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        public WishListResponseModel MoveToCart(int claimId, int WishListId)
+        {
+            try
+            {
+                var response = this.dbContext.WishList.FirstOrDefault(value => ((value.WishListID == WishListId)) && ((value.IsDeleted == "No")) && ((value.IsMoved == "No")));
+                if (response != null)
+                {
+                    CartModel cart = new CartModel();
+                    cart.UserId = claimId;
+                    cart.BookId = response.BookId;
+                    cart.CreatedDate = DateTime.Now;
+                    cart.IsDeleted = "No";
+                    response.IsMoved = "Yes";
+                    this.dbContext.Cart.Add(cart);
+                    this.dbContext.WishList.Update(response);
+                    this.dbContext.SaveChanges();
+                    return Response(response);
+                }
+                return wishListResponse;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
         public WishListResponseModel Response(WishListModel wishListModel)
         {
             WishListResponseModel wishList = new WishListResponseModel();

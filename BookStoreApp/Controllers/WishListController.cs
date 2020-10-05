@@ -80,5 +80,69 @@ namespace BookStoreApp.Controllers
                 return this.BadRequest(new { status = false, message = e.Message });
             }
         }
+        [HttpDelete]
+        [Route("{WishListId}")]
+        [AllowAnonymous]
+        //[Authorize(Roles = "User")]
+        public IActionResult DeleteFromWishList([FromRoute] int WishListId)
+        {
+            try
+            {
+                // Call the AddToCart Method of Cart class
+                var response = this.wishListBuiseness.DeleteFromWishList(WishListId);
+
+                // check if Id is not equal to zero
+                if (!response.WishListId.Equals(0))
+                {
+                    bool status = true;
+                    var message = "Deleted From WishList Successfully";
+                    return this.Ok(new { status, message, data = response });
+                }
+                else
+                {
+                    bool status = false;
+                    var message = "Failed To Delete";
+                    return this.NotFound(new { status, message });
+                }
+            }
+            catch (Exception e)
+            {
+                return this.BadRequest(new { status = false, message = e.Message });
+            }
+        }
+
+        [HttpPost]
+        [Route("MoveToCart")]
+        [AllowAnonymous]
+        //[Authorize(Roles = "User")]
+        public IActionResult MoveToCart(int WishListId)
+        {
+            try
+            {
+                int claimId = Convert.ToInt32(HttpContext.User.Claims.FirstOrDefault(claim => claim.Type == "Id").Value);
+
+                // Call the MoveToCart Method of Cart class
+                var response = this.wishListBuiseness.MoveToCart(claimId, WishListId);
+
+                // check if Id is not equal to zero
+                if (!response.WishListId.Equals(0))
+                {
+                    bool status = true;
+                    var message = "Successfully Move To Cart";
+                    return this.Ok(new { status, message, data = response });
+                }
+                else
+                {
+                    bool status = false;
+                    var message = "Failed To Move";
+                    return this.NotFound(new { status, message });
+                }
+            }
+            catch (Exception e)
+            {
+                return this.BadRequest(new { status = false, message = e.Message });
+            }
+        }
+
     }
 }
