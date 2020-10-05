@@ -10,5 +10,7 @@ namespace BusinessLayer.Interface
         CartResponseModel AddToCart(int claimId, int BookId);
 
         List<CartResponseModel> GetAllCartValues();
+
+        CartResponseModel DeleteFromCart(int CartId);
     }
 }

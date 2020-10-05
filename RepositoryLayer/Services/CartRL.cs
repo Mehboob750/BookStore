@@ -63,12 +63,13 @@ namespace RepositoryLayer.Services
                 var cartResponse = this.dbContext.Cart;
                 foreach (var response in cartResponse)
                 {
+                    CartResponseModel cart = new CartResponseModel();
                     if (response.IsDeleted == "No")
                     {
-                        CartResponseModel cart = new CartResponseModel();
                         cart = Response(response);
                         cartResponseList.Add(cart);
                     }
+                   
                 }
                 return cartResponseList;
             }
@@ -78,14 +79,33 @@ namespace RepositoryLayer.Services
             }
         }
 
-
+        public CartResponseModel DeleteFromCart(int CartId)
+        {
+            try
+            {
+                var response = this.dbContext.Cart.FirstOrDefault(value => ((value.CartId == CartId)) && ((value.IsDeleted == "No")));
+                if (response != null)
+                {
+                    response.IsDeleted = "Yes";
+                    this.dbContext.Cart.Update(response);
+                    this.dbContext.SaveChanges();
+                    return Response(response);
+                }
+                return cartResponse;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
         public CartResponseModel Response(CartModel cartModel)
         {
-            cartResponse.CartId = cartModel.CartId;
-            cartResponse.UserId = cartModel.UserId;
-            cartResponse.BookId = cartModel.BookId;
-            cartResponse.CreatedDate = cartModel.CreatedDate;
-            return cartResponse;
+            CartResponseModel cart = new CartResponseModel();
+            cart.CartId = cartModel.CartId;
+            cart.UserId = cartModel.UserId;
+            cart.BookId = cartModel.BookId;
+            cart.CreatedDate = cartModel.CreatedDate;
+            return cart;
         }
     }
 }

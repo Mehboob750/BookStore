@@ -49,5 +49,19 @@ namespace BusinessLayer.Services
                 throw new Exception(exception.Message);
             }
         }
+
+        public CartResponseModel DeleteFromCart(int CartId)
+        {
+            try
+            {
+                // Call the DeleteFromCart Method of Cart Repository Class
+                var response = this.cartRepository.DeleteFromCart(CartId);
+                return response;
+            }
+            catch (Exception exception)
+            {
+                throw new Exception(exception.Message);
+            }
+        }
     }
 }
