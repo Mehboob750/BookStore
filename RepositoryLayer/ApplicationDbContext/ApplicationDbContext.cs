@@ -33,7 +33,8 @@ namespace RepositoryLayer
         public DbSet<CartModel> Cart { get; set; }
 
         public DbSet<WishListModel> WishList { get; set; }
-        
+
+        public DbSet<AddressModel> UserAddress { get; set; }
 
     }
 }
