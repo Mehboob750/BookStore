@@ -55,6 +55,31 @@ namespace RepositoryLayer.Services
                 throw new Exception(e.Message);
             }
         }
+
+        public List<WishListResponseModel> GetAllWishListValues()
+        {
+            try
+            {
+                List<WishListResponseModel> wishListResponseList = new List<WishListResponseModel>();
+                var wishListResponse = this.dbContext.WishList;
+                foreach (var response in wishListResponse)
+                {
+                    WishListResponseModel wishList = new WishListResponseModel();
+                    if (response.IsDeleted == "No")
+                    {
+                        wishList = Response(response);
+                        wishListResponseList.Add(wishList);
+                    }
+
+                }
+                return wishListResponseList;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
         public WishListResponseModel Response(WishListModel wishListModel)
         {
             WishListResponseModel wishList = new WishListResponseModel();

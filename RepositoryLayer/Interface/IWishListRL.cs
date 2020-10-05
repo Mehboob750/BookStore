@@ -8,5 +8,7 @@ namespace RepositoryLayer.Interface
     public interface IWishListRL
     {
         WishListResponseModel AddToWishList(int claimId, int BookId);
+
+        List<WishListResponseModel> GetAllWishListValues();
     }
 }

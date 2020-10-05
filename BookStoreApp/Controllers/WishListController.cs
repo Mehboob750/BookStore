@@ -50,5 +50,35 @@ namespace BookStoreApp.Controllers
                 return this.BadRequest(new { status = false, message = e.Message });
             }
         }
+
+        [HttpGet]
+        [AllowAnonymous]
+        //[Authorize(Roles = "User")]
+        public IActionResult GetAllWishListValues()
+        {
+            try
+            {
+                // Call the GetAllWishListValues Method of Cart class
+                var response = this.wishListBuiseness.GetAllWishListValues();
+
+                // check if Id is not equal to zero
+                if (!response.Equals(null))
+                {
+                    bool status = true;
+                    var message = "WishList Data Read Successfully";
+                    return this.Ok(new { status, message, data = response });
+                }
+                else
+                {
+                    bool status = false;
+                    var message = "Failed To Read WishList Details";
+                    return this.BadRequest(new { status, message });
+                }
+            }
+            catch (Exception e)
+            {
+                return this.BadRequest(new { status = false, message = e.Message });
+            }
+        }
     }
 }

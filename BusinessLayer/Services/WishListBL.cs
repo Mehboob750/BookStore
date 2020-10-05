@@ -37,5 +37,18 @@ namespace BusinessLayer.Services
                 throw new Exception(exception.Message);
             }
         }
+
+        public List<WishListResponseModel> GetAllWishListValues()
+        {
+            try
+            {
+                var response = this.wishListRepository.GetAllWishListValues();
+                return response;
+            }
+            catch (Exception exception)
+            {
+                throw new Exception(exception.Message);
+            }
+        }
     }
 }
