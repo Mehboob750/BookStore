@@ -37,7 +37,7 @@ namespace RepositoryLayer
 
         public DbSet<AddressModel> UserAddress { get; set; }
 
-        public DbSet<OrderModel> Order { get; set; }
+        public DbSet<OrderModel> Orders { get; set; }
 
     }
 }

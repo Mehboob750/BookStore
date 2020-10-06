@@ -23,34 +23,29 @@ namespace CommanLayer.Model
         public int UserId { get; set; }
 
         /// <summary>
-        /// Gets or sets the BookId
-        /// </summary>
-        public int BookId { get; set; }
-
-        /// <summary>
         /// Gets or sets the AddressID
         /// </summary>
         public int AddressID { get; set; }
 
         /// <summary>
-        /// Gets or sets the City
+        /// Gets or sets the IsActive
         /// </summary>
-        public string City { get; set; }
+        public string IsActive { get; set; }
 
         /// <summary>
-        /// Gets or sets the State
+        /// Gets or sets the IsPlaced
         /// </summary>
-        public string State { get; set; }
+        public string IsPlaced { get; set; }
 
         /// <summary>
-        /// Gets or sets the Pincode
+        /// Gets or sets the Quantity
         /// </summary>
-        public string PinCode { get; set; }
+        public int Quantity { get; set; }
 
         /// <summary>
-        /// Gets or sets the PhoneNumber
+        /// Gets or sets the TotalPrice
         /// </summary>
-        public string PhoneNumber { get; set; }
+        public string TotalPrice { get; set; }
 
         /// <summary>
         /// Gets or sets the CreatedDate

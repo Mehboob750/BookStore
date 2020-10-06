@@ -41,21 +41,46 @@ namespace RepositoryLayer.Services
                 {
                     orderModel.CartId = response.CartId;
                     orderModel.UserId = claimId;
-                    orderModel.BookId = response.BookId;
                     var address = this.dbContext.UserAddress.FirstOrDefault(value => ((value.UserId == claimId)));
                     orderModel.AddressID = address.AddresstId;
-                    orderModel.City = address.City;
-                    orderModel.State = address.State;
-                    orderModel.PinCode = address.Pincode;
-                    var userData = this.dbContext.UserDetails.FirstOrDefault(value => ((value.Id == claimId)));
-                    orderModel.PhoneNumber = userData.PhoneNumber;
+                    orderModel.IsActive = "Yes";
+                    orderModel.IsPlaced = "No";
+                    orderModel.Quantity = 1;
+                    var book = this.dbContext.Books.FirstOrDefault(value => ((value.BookId == response.BookId)));
+                    orderModel.TotalPrice = book.Price;
                     orderModel.CreatedDate = DateTime.Now;
                     orderModel.ModificationDate = DateTime.Now;
-                    this.dbContext.Order.Add(orderModel);
+                    this.dbContext.Orders.Add(orderModel);
+                    this.dbContext.SaveChanges();
+                    response.IsDeleted = "Yes";
+                    this.dbContext.Cart.Update(response);
                     this.dbContext.SaveChanges();
                     return Response(orderModel);
                 }
                 return orderResponse;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        public List<OrderResponseModel> GetAllOrderValues()
+        {
+            try
+            {
+                List<OrderResponseModel> orderResponseList = new List<OrderResponseModel>();
+                var orderResponse = this.dbContext.Orders;
+                 foreach (var response in orderResponse)
+                 {
+                     OrderResponseModel order = new OrderResponseModel();
+                     if (response.IsPlaced == "No")
+                     {
+                         order = Response(response);
+                         orderResponseList.Add(order);
+                     }
+                 }
+                 return orderResponseList;
             }
             catch (Exception e)
             {
@@ -69,10 +94,11 @@ namespace RepositoryLayer.Services
             order.OrderId = orderModel.OrderId;
             order.CartId = orderModel.CartId;
             order.UserId = orderModel.UserId;
-            order.BookId = orderModel.BookId;
-            order.City = orderModel.City;
-            order.State = orderModel.State;
-            order.PinCode = orderModel.PinCode;
+            order.AddressID = orderModel.AddressID;
+            order.IsActive = orderModel.IsActive;
+            order.IsPlaced = orderModel.IsPlaced;
+            order.Quantity = orderModel.Quantity;
+            order.TotalPrice = orderModel.TotalPrice;
             order.CreatedDate = orderModel.CreatedDate;
             order.ModificationDate = orderModel.ModificationDate;
             return order;

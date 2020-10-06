@@ -5,6 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20201006095022_Orders.cs" />
+    <Compile Remove="Migrations\20201006095022_Orders.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="CloudinaryDotNet" Version="1.11.0" />
   </ItemGroup>
 

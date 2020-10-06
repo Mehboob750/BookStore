@@ -8,5 +8,7 @@ namespace RepositoryLayer.Interface
     public interface IOrderRL
     {
         OrderResponseModel BookOrder(int claimId, int CartId);
+
+        List<OrderResponseModel> GetAllOrderValues();
     }
 }

@@ -8,5 +8,7 @@ namespace BusinessLayer.Interface
     public interface IOrderBL
     {
         OrderResponseModel BookOrder(int claimId, int CartId);
+
+        List<OrderResponseModel> GetAllOrderValues();
     }
 }

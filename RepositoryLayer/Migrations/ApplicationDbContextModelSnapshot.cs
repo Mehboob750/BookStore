@@ -96,27 +96,25 @@ namespace RepositoryLayer.Migrations
 
                     b.Property<int>("AddressID");
 
-                    b.Property<int>("BookId");
-
                     b.Property<int>("CartId");
-
-                    b.Property<string>("City");
 
                     b.Property<DateTime>("CreatedDate");
 
+                    b.Property<string>("IsActive");
+
+                    b.Property<string>("IsPlaced");
+
                     b.Property<DateTime>("ModificationDate");
 
-                    b.Property<string>("PhoneNumber");
+                    b.Property<int>("Quantity");
 
-                    b.Property<string>("PinCode");
-
-                    b.Property<string>("State");
+                    b.Property<string>("TotalPrice");
 
                     b.Property<int>("UserId");
 
                     b.HasKey("OrderId");
 
-                    b.ToTable("Order");
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("CommanLayer.Model.UserModel", b =>

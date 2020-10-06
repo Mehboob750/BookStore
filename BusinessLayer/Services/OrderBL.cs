@@ -36,5 +36,18 @@ namespace BusinessLayer.Services
                 throw new Exception(exception.Message);
             }
         }
+
+        public List<OrderResponseModel> GetAllOrderValues()
+        {
+            try
+            {
+                var response = this.orderRepository.GetAllOrderValues();
+                return response;
+            }
+            catch (Exception exception)
+            {
+                throw new Exception(exception.Message);
+            }
+        }
     }
 }
